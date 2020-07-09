@@ -1,0 +1,30 @@
+---
+title: "Exam 3"
+author: "Divya Koothan"
+date: "7/9/2020"
+output: word_document
+toc: TRUE
+---
+
+```{r}
+1. 
+```
+
+
+
+```{r}
+2.
+```
+
+
+```{r}
+3. 
+```
+
+
+```{r}
+4.
+```
+
+
+

@@ -123,17 +123,20 @@ gdp_current <- WDI(country = "all",
                      indicator = "NY.GDP.MKTP.CD", #GDP deflator for 2015
                      start = 2006, end= 2007, 
                      extra = FALSE, cache = NULL) 
+#change variable name
+setnames(gdp_current, "NY.GDP.MKTP.CD", "GDP_current")
 
 ```
 
 
 ```{r}
 9.#deflating to the base year 2015
+library(WDI)
 deflator_data <- WDI(country = "all",
                      indicator = "NY.GDP.DEFL.ZS", #GDP deflator for 2015
                      start = 2001, end= 2017, 
                      extra = FALSE, cache = NULL) 
-
+#renaming the variable
 setnames(deflator_data, "NY.GDP.DEFL.ZS", "deflator")
 
 #subset data fram to get only US $s

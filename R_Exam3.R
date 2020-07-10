@@ -85,7 +85,28 @@ inequality_collapsed <-
 #7
 #loading libraries 
 library(ggplot2)
+library(rio)
+library(tidyverse)
+library(googlesheets4)
+library(labelled)
+library(data.table)
+library(varhandle)
+library(ggrepel)
+library(geosphere)
+library(rgeos)
+library(viridis)
+library(mapview)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(devtools)
+library(rnaturalearthhires)
+library(raster) #remotes
+library(sp)
+library(sf)
+library(ggsflabel)
+library(Imap)
 #figure out shapefile stuff
+world_borders <- st_read("C:/Users/Divya Koothan/Desktop/GOV 355M/Exam_3/cb_2018_us_state_5m.zip/cb_2018_us_state_5m.shp", stringsAsFactors = FALSE)
 
 #8
 #loading library
@@ -203,6 +224,3 @@ title <- hot100exam %>%
 #                     'chart-element__meta')]") %>%
 #  rvest::html_text()
 
-#save the data fram as a stata dataset
-library(rio)
-export(merged_df, "final_data.dta")

@@ -15,35 +15,42 @@ rm(list = ls(all = TRUE))
 ```{r}
 2.#library tidycensus 
 library(tidycensus)
+library(tidyverse)
 #install census api key
 census_api_key("ad36f8ac89c353658437a6bcb4af62cbc5e6a8c7")
 
 #getting ACS data 
 df <- load_variables(year = 2015,
-                      "acs5")
+                   "acs5")
 df2 <- df <- load_variables(year = 2010,
                             "acs5")
 
 #getting the data for both years
  gini2015<- get_acs(geography = "state",
-                 variables = c(estimate = c("B19083_001")),
+               variables = c(estimate = c("B19083_001")),
                 year = 2015)
- #creating year variable
- gini2015 <- gini2015 %>%
-   mutate(year = 2015) %>%
-
+ 
+#creating year variable
+ gini2015 <- 
+   gini2015 %>%
+   mutate(year = 2015) 
+ 
 #loading lable package     
 library(data.table)
  #seting names for state 
 setnames(gini2015, "NAME", "state")
+
  #getting 2010 data 
  gini2010<- get_acs(geography = "state",
                     variables = c(estimate = c("B19083_001")),
                     year = 2010)
+ 
  #creating year variable 
- gini2010 <- gini2010 %>%
+ gini2010 <- 
+   gini2010 %>%
    mutate(year = 2010)
- #seting names for state
+ 
+#setting names for state
 setnames(gini2010, "NAME", "state")
 
  #appending the data frames
@@ -200,6 +207,55 @@ Top 5 words and frequency
 3         corruption 186
 4         governance 185
 5          democracy 132
+
+
+```{r}
+15.#loading library
+library(rvest)
+#loading Billboard Top 100 page 
+hot100page <- "https://www.billboard.com/charts/hot-100"
+hot100exam <- read_html(hot100page)
+```
+
+
+```{r}
+16. #identifying the nodes in the webpage
+nodes <- hot100exam %>%
+  html_node("body") %>% #let's R know structure of web page
+  html_children()
+```
+
+
+```{r}
+17.#scrape for rank
+rank <- hot100exam %>%
+  rvest::html_nodes('body') %>%
+  xml2::xml_find_all("//span[contains(@class, 
+                     'chart-element__rank__number')]") %>%#gets the ranl
+  rvest::html_text()
+
+#scrape for artist
+artist <- hot100exam %>%
+  rvest::html_nodes('body') %>%
+  xml2::xml_find_all("//span[contains(@class, 
+                     'chart-element__information__artist')]") %>%#
+  rvest::html_text()
+
+#scrape for title 
+title <- hot100exam %>%
+  rvest::html_nodes('body') %>%
+  xml2::xml_find_all("//span[contains(@class, 
+                     'chart-element__information__song')]") %>%
+  rvest::html_text()
+
+#scrape for last week
+#last_week <- hot100exam %>%
+#  rvest::html_nodes('body') %>%
+#  xml2::xml_find_all("//div[contains(@class, 
+#                     'chart-element__meta')]") %>%
+#  rvest::html_text()
+
+```
 
 
 Q. [link to Github repo] (https://github.com/div-koothan/Exam_3)

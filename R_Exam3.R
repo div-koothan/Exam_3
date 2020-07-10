@@ -24,7 +24,7 @@ df2 <- df <- load_variables(year = 2010,
                 year = 2015)
  #creating year variable
  gini2015 <- gini2015 %>%
-   mutate(year = 2015) %>%
+   mutate(year = 2015)
 
 #loading lable package     
 library(data.table)
@@ -161,6 +161,48 @@ armeniatext%>%
   count(word, sort = TRUE) 
 head(armeniatext)
 
+#15 
+#loading library
+library(rvest)
+#loading Billboard Top 100 page 
+hot100page <- "https://www.billboard.com/charts/hot-100"
+hot100exam <- read_html(hot100page)
 
+#16
+#identifying the nodes in the webpage
+nodes <- hot100exam %>%
+  html_node("body") %>% #let's R know structure of web page
+  html_children()
 
+#17
+#scrape for rank
+rank <- hot100exam %>%
+  rvest::html_nodes('body') %>%
+  xml2::xml_find_all("//span[contains(@class, 
+                     'chart-element__rank__number')]") %>%#gets the ranl
+  rvest::html_text()
 
+#scrape for artist
+artist <- hot100exam %>%
+  rvest::html_nodes('body') %>%
+  xml2::xml_find_all("//span[contains(@class, 
+                     'chart-element__information__artist')]") %>%#
+  rvest::html_text()
+
+#scrape for title 
+title <- hot100exam %>%
+  rvest::html_nodes('body') %>%
+  xml2::xml_find_all("//span[contains(@class, 
+                     'chart-element__information__song')]") %>%
+  rvest::html_text()
+
+#scrape for last week
+#last_week <- hot100exam %>%
+#  rvest::html_nodes('body') %>%
+#  xml2::xml_find_all("//div[contains(@class, 
+#                     'chart-element__meta')]") %>%
+#  rvest::html_text()
+
+#save the data fram as a stata dataset
+library(rio)
+export(merged_df, "final_data.dta")
